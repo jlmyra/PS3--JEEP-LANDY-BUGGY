@@ -73,4 +73,4 @@ Ps3.event.analog_changed.button.___
     if( Ps3.data.button.circle && Ps3.data.button.right )
         Serial.println("Pressing both the circle and right buttons");
         */
-*/
+
