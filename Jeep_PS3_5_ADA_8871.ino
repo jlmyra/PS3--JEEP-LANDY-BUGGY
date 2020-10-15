@@ -1,9 +1,8 @@
+
+
 #include <Ps3Controller.h>
 
 //****************Motor PWM******************************/
-//int freq = 1000; //PWM Frequency
-//int ledChannel = 0; // channels 2-15 (0-1 reserved for servos)
-//int resolution = 8; //8 bit resolution PWM
 
 uint32_t freq = 30000;  //PWM Frequency
 uint8_t driveMotorChannel = 14;//changed line 96 espservo.h to 2 servos max leaving channels 2-16 availble for motors

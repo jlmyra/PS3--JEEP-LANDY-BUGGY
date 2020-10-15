@@ -1,5 +1,4 @@
 /*
- * 
  
  Thanks to Jeffrey van Pernis for sharing the PS3 code. See-https://github.com/jvpernis/esp32-ps3
 
@@ -73,4 +72,3 @@ Ps3.event.analog_changed.button.___
     if( Ps3.data.button.circle && Ps3.data.button.right )
         Serial.println("Pressing both the circle and right buttons");
         */
-
