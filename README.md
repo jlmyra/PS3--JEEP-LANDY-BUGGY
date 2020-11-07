@@ -16,4 +16,10 @@ system using inexpensive off-the-shelf parts.
 - 180 deg Servo (steering) - https://tinyurl.com/y5thqy46 ($19.00)
 - Drive Motor - https://tinyurl.com/y549xxzk ($16.00)
 - Winch motor - https://tinyurl.com/y6g5tkvd ($8.00)
-- 
+- Battery - https://tinyurl.com/y5fdwxl3 ($31.00)
+
+### Background:
+This project is a continuation of a previously posted project - Wemos - Blynk - iPhone Remote-Controlled 3D-Printed Jeep. That project describes hardware and software to control a 3D Sets 3D printed remote controlled vehicle using an ESP8266 and Blynk on an iPhone as the remote control. While it was an elegant solution requiring a Raspberry Pi as a server between the car and phone it has some shortcomings. The Blynk interface on the iPhone does not give much precision on the steering joystick and inadvertent touching of the interface could cause the app to disappear.  It didn't really pass the grandson test! My grandson asked if we could use a Playstation 3 controller.  I began exploring the possibility of using a cloned Playstation 3 wireless bluetooth controller instead of Blynk on the iPhone. Since the ESP8266 does not have bluetooth capability an ESP32 would be necessary. I wanted to keep everything in the electronics box provided for in the 3D-Sets design. Most ESP32's that was was familiar with would take up too much space to be feasible. That was until I found the MH-ET ESP 32 mini. This board packs an ESP32 on a board just slightly wider than the WEMOS ESP8266.
+- Set-up ESP32 in Arduino IDE
+- Install PS3 Library in Arduino IDE https://github.com/jvpernis/esp32-ps3
+- Install ESP32Servo Library in Arduino IDE https://github.com/jkb-git/ESP32Servo - I had to make a small modification to espservo.h . This library uses all of the pwm channels for servos leaving none for motors. You will need to change line 96 of espservo.h to 2 servos max leaving channels 2-16 available for motors
