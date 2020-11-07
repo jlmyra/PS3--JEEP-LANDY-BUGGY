@@ -12,3 +12,8 @@ system using inexpensive off-the-shelf parts.
 - 680K resistor
 - 0.1uf capacitor
 - 5V, 3A BEC/UBEC (battery elimination circuit) - https://tinyurl.com/y3t4wqus (~$4.00)
+### Other Parts:
+- 180 deg Servo (steering) - https://tinyurl.com/y5thqy46 ($19.00)
+- Drive Motor - https://tinyurl.com/y549xxzk ($16.00)
+- Winch motor - https://tinyurl.com/y6g5tkvd ($8.00)
+- 
