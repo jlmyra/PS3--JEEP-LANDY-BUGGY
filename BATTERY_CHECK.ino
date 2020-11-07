@@ -18,39 +18,48 @@
   previousMillis = currentMillis; //reset the time
   
   bitVoltage = analogRead(batPin); // read the ADC voltage on Pin A0
-  //batteryVoltage = (8.3 * bitVoltage / 4096) + .45; //Convert the ADC voltage to actual voltage
-  batteryVoltage = ((bitVoltage / 4096) * 8.3) + .3;
-  //batRemPercent = map(bitVoltage, 3280, 4096, 0, 100); //Map ADC voltage to percent
+  batteryVoltage = ((bitVoltage / 4096) * 8.3) + .3;//Convert the ADC voltage to actual voltage
+  
   Serial.print ("bitVoltage= "); Serial.print (bitVoltage); Serial.print("\t"); Serial.print("batteryVoltage= "); 
-  Serial.println (batteryVoltage);
+  Serial.print (batteryVoltage); Serial.print(" RumbleCounter= "); Serial.println(rumbleCounter);
+ 
   if(bitVoltage > 3680) {
    Ps3.setPlayer(batStatusLED);
-   batStatusLED = 10;
-
+   batStatusLED = 10; //4 LED's
+   rumbleCounter = 0;
   }
   else if(bitVoltage <= 3680 && bitVoltage > 3480 ) {
    Ps3.setPlayer(batStatusLED);
-   batStatusLED = 9;  
+   batStatusLED = 9; 
+   rumbleCounter = 0; 
   }
   else if(bitVoltage <= 3480 && bitVoltage > 3280 ) {
    Ps3.setPlayer(batStatusLED);
-   batStatusLED = 7;  
+   batStatusLED = 7; 
+   rumbleCounter = 0; 
   }
    else if(bitVoltage < 3280 ) {
    Ps3.setPlayer(batStatusLED);
    batStatusLED = 4;
-   
-//*******************SET RUMBLE***
-  ps3_cmd_t cmd;
 
-  cmd.rumble_left_intensity = 0x7d;
-  cmd.rumble_right_intensity = 0x7d; //0xff = 255
+//************************SET RUMBLE*************************
+
+   if (rumbleCounter == 14){  //15 seconds or rumbleCounter * interval(millis)
+   
+    ps3_cmd_t cmd;
+
+    cmd.rumble_left_intensity = 0x7d;
+    cmd.rumble_right_intensity = 0x7d; //0xff = 255
   
-  cmd.rumble_right_duration = 100;
-  cmd.rumble_left_duration = 100;
+    cmd.rumble_right_duration = 100;
+    cmd.rumble_left_duration = 100;
   
-  ps3Cmd(cmd);
-//*******************SET RUMBLE*** 
+    ps3Cmd(cmd);
+    rumbleCounter = 13; //Continue with Rumble
+   }
+  rumbleCounter++;
+  
+//***********************END SET RUMBLE*********************
       }
     }
   }

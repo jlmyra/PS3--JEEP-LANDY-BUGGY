@@ -5,7 +5,7 @@
 void onConnection() {
    
   if (Ps3.isConnected()) {
-    Serial.println("Controller connected.");
+    Serial.println("*******PS3 Controller connected*******");
   }
 }
 
