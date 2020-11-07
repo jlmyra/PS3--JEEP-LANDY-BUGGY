@@ -1,6 +1,8 @@
-# PS3, 3DSets Jeep & Landy (https://www.3dsets.com/)
+# DIY Radio Control System for 3D-Sets Jeep & Landy Using PS3 Contoller and ESP3
+3DSets (https://www.3dsets.com/) offers excellent 3d printable Jeep and Landy models complete with .stl's and gcode.
+As an alternative to using traditional RC parts for the readio control system the following is an alternative DIY bluetooth radio control
+system using inexpensive off-the-shelf parts. 
 
-## DIY Control System for 3D-Sets Jeep & Landy Using PS3 Contoller and ESP32 
 ### PS3 Controller Parts:
 - MH-ET ESP32 Microcontroller - https://acrobotic.com/collections/esp8266/products/acr-00024 ($6.95)
 - Adafruit DRV8871 Motor Controller - https://tinyurl.com/y2jta8pr ($7.50)
