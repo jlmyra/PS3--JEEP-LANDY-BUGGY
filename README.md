@@ -24,6 +24,6 @@ This project is a continuation of a previously posted project - Wemos - Blynk - 
 - Set-up ESP32 in Arduino IDE (for help see: https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-mac-and-linux-instructions/)
 - Install PS3 Library in Arduino IDE https://github.com/jvpernis/esp32-ps3 (for help see: https://techtutorialsx.com/2020/02/16/esp32-connecting-a-ps3-controller/)
 - Install ESP32Servo Library in Arduino IDE https://github.com/jkb-git/ESP32Servo (for help see:https://dronebotworkshop.com/esp32-servo/) - I had to make a small modification to espservo.h . This library uses all of the pwm channels for servos leaving none for motors. You will need to change line 96 of espservo.h to 2 servos max leaving channels 2-16 available for motors
--
+-Description: The sketch is presented in a 'tabbed' arrangement for ease of modifying. 
 ### Hardware Implementation:
 
