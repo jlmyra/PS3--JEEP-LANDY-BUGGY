@@ -2,7 +2,7 @@
 # DIY Radio Control System for 3D-Sets Jeep & Landy Using PS3 Contoller and ESP32
 3DSets (https://www.3dsets.com/) offers excellent 3d printable Jeep and Landy models complete with .stl's and gcode.
 As an alternative to using traditional RC parts for the radio control system the following is an alternative DIY bluetooth radio control
-system using inexpensive off-the-shelf parts. 
+system using inexpensive off-the-shelf parts. These parts will fit within the electronics box for each vehicle. 
 
 ### PS3 Controller Parts:
 - MH-ET ESP32 Microcontroller - https://acrobotic.com/collections/esp8266/products/acr-00024 ($6.95)
@@ -21,7 +21,7 @@ system using inexpensive off-the-shelf parts.
 
 ### Background:
 This project is a continuation of a previously posted project - Wemos - Blynk - iPhone Remote-Controlled 3D-Printed Jeep. That project describes hardware and software to control a 3D Sets 3D printed remote controlled vehicle using an ESP8266 and Blynk on an iPhone as the remote control. While it was an elegant solution requiring a Raspberry Pi as a server between the car and phone it has some shortcomings. The Blynk interface on the iPhone does not give much precision on the steering joystick and inadvertent touching of the interface could cause the app to disappear.  More importantly it didn't really pass the grandson test! This effort began when my grandson asked if we could use a Playstation 3 controller instead the iPhone.  In this arrangement the ESP8266 is replaced with a ESP32 to take advantage of the bluetooth radio. More importantly all of the hard work involved with connecting an ESP32 to a PS3 controller has been done by PVPernis. A link to his library is below. I simply took advantage of his work to make this setup functional.
-### Software Implemntation:
+### Software Implementation:
 - Set-up ESP32 in Arduino IDE (for help see: https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-mac-and-linux-instructions/)
 - Install PS3 Library in Arduino IDE https://github.com/jvpernis/esp32-ps3 (for help see: https://techtutorialsx.com/2020/02/16/esp32-connecting-a-ps3-controller/)
 - Install ESP32Servo Library in Arduino IDE https://github.com/jkb-git/ESP32Servo (for help see:https://dronebotworkshop.com/esp32-servo/) - I had to make a small modification to espservo.h . This library uses all of the pwm channels for servos leaving none for motors. You will need to change line 96 of espservo.h to 2 servos max leaving channels 2-16 available for motors
