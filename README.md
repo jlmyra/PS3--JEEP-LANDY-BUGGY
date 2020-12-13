@@ -12,7 +12,7 @@ system using inexpensive off-the-shelf parts. These parts will fit within the el
 - 425K resistor
 - 680K resistor
 - 0.1uf capacitor
-- 5V, 3A BEC/UBEC (battery elimination circuit) - https://tinyurl.com/y3t4wqus (~$4.00)
+- 5V, 3A BEC/UBEC (battery elimination circuit) - https://tinyurl.com/y3t4wqus (~$4.00) or https://tinyurl.com/y2z84n8p
 ### Other Parts:
 - 180 deg Servo (steering) - https://tinyurl.com/y5thqy46 ($19.00)
 - Drive Motor - https://tinyurl.com/y549xxzk ($16.00)
@@ -26,6 +26,20 @@ This project is a continuation of a previously posted project - Wemos - Blynk - 
 - Install PS3 Library in Arduino IDE https://github.com/jvpernis/esp32-ps3 (for help see: https://techtutorialsx.com/2020/02/16/esp32-connecting-a-ps3-controller/)
 - Install ESP32Servo Library in Arduino IDE https://github.com/jkb-git/ESP32Servo (for help see:https://dronebotworkshop.com/esp32-servo/) - I had to make a small modification to espservo.h . This library uses all of the pwm channels for servos leaving none for motors. You will need to change line 96 of espservo.h to 2 servos max leaving channels 2-16 available for motors
 - Description: The sketch is presented in a 'tabbed' format for ease of editing. JEEP_LANDY_PS3_ESP32.ino contains the variables, setup, and loop. Pay attention to the steering servo section. You can 'align' the front end by changing 'servomin' and 'servomax'. The ESP32Servo library needs a minor modification. It is written in a way that dedicates all of the pwm channels to servos. Two pwm channels are required for the drive and winch motors. Line 96 of espservo.h needs to be set to 2 servos max.  The sketch is designed to produce forward and backward movment of the vehicle by moving the left joystick forward and back. The 'normal' speed is throttled to 45% of the available speed. Pressing the L1 button before moving the left joystick will produce a "nitro' mode producing 65% of the available speed. The right joystick controls the steering left-right. The sketch also 'ramps' the acceleration gradually increasing the pwm duty cycle to the motor. This prevents all of the motor torque from being delivered instantaneously to the drive train. It accelerates more like it has a clutch or torque convertor in the system. The rate of change can be modified by changing the 'motorSpeedIncrement' variable. The winch is operated using the triangle button to unwind the winch and the x button to rewind the winch. There is also a circuit for monitoring the charge state of the battery in the vehicle. There is a tap on the + side of the battery that goes to a voltage divider. The output of the voltage divider is read on GPIO32 an ADC pin. The charge state of the battery is displayed on the controller LEDS. 4 LEDS - full charge, 3 LEDS 75%, 2 LEDS 50%, and 1 LED- time to recharge. When the voltage goes below 7 volts for 15 seconds the controller will begin vibrating to remind the operator to recharge the battery.
+ - The sketch is presented in a 'tabbed' format. There are five files that need to be downloaded into a folder:
+ - **JEEP_LANDY_PS3_ESP32.ino** contains the variables, setup, and loop. Enter your PS3 MAC Address on Line XX in void Setup().
+ - **BATTERY_CHECK.ino** This function monitors the battery charge state and warns the operator to recharge the battery by activating the vibration motors in the PS3 controller.
+ - **Connection.ino**
+ - **Citations.ino**
+ - **EVENTS.ino**
 ### Wiring Diagram:
 ![pic one](https://github.com/jlmyra/PS3--JEEP-LANDY/blob/main/JEEP-LANDY_Wiring_Diagram.png)
+
+### Wiring
+<img src="https://user-images.githubusercontent.com/19330858/101287278-4f142900-37bd-11eb-98c9-aa06b67d0906.jpeg" width="15%"></img> <img src="https://user-images.githubusercontent.com/19330858/101287284-54717380-37bd-11eb-911c-3e1199b6ab27.jpeg" width="15%"></img> <img src="https://user-images.githubusercontent.com/19330858/101287286-5a675480-37bd-11eb-9305-bae63bd2e4bf.jpeg" width="15%"></img> 
+
+ - I used 2.54mm pitch screw terminal blocks for making circuit board connections instead of soldering wires directly to the circuit boards. This makes it easy to fix wiring issues (mistakes!). It also makes it easy to reuse the boards in other applications.
+ - I offer suggestions for 2 different BEC's necessary to reduce the battery voltage from ~8V to 5V for the ESP32. The second one in the parts list is much smaller making it preferable over the other. Any device that will reduce the battery voltage to 5V can be used.
+ - You will have to solder the screw terminals to the MD13S and DRV8871 motor controllers.
+
 
