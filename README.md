@@ -9,8 +9,8 @@ system using inexpensive off-the-shelf parts. These parts will fit within the el
 - Adafruit DRV8871 Motor Controller - https://tinyurl.com/y2jta8pr ($7.50)
 - Cytron MD13S Motor Controller - https://www.cytron.io/p-13amp-6v-30v-dc-motor-driver ($9.90)
 - PS3 Controller - Amazon : https://tinyurl.com/y3ootahd ($19.90)
-- 8K2 resistor
-- 68K resistor
+- 390K resistor
+- 47K resistor
 - 0.1uf capacitor
 - 5V, 3A BEC/UBEC (battery elimination circuit) - https://tinyurl.com/y3t4wqus (~$4.00) or https://tinyurl.com/y2z84n8p
 ### Other Parts:
