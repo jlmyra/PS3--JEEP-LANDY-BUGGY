@@ -42,7 +42,7 @@ The sketch includes many comments to follow the logic.
 ![IMG_8972](https://user-images.githubusercontent.com/19330858/121811845-a810be00-cc33-11eb-854b-9439ca7537ce.jpeg)
 ![IMG_9633](https://user-images.githubusercontent.com/19330858/121811852-ae9f3580-cc33-11eb-84ea-e2bdebc1cd3b.jpeg)
 ![IMG_9630](https://user-images.githubusercontent.com/19330858/121811855-b232bc80-cc33-11eb-9704-96d9016bea4d.jpeg)
-![IMG_6318](https://user-images.githubusercontent.com/19330858/121811857-b4951680-cc33-11eb-8847-99f7ff77d8fa.jpeg)
+
 <img src="https://user-images.githubusercontent.com/19330858/101287278-4f142900-37bd-11eb-98c9-aa06b67d0906.jpeg" width="15%"></img> <img src="https://user-images.githubusercontent.com/19330858/101287284-54717380-37bd-11eb-911c-3e1199b6ab27.jpeg" width="15%"></img> <img src="https://user-images.githubusercontent.com/19330858/101287286-5a675480-37bd-11eb-9305-bae63bd2e4bf.jpeg" width="15%"></img> 
 
  - I used 2.54mm pitch screw terminal blocks for making circuit board connections instead of soldering wires directly to the circuit boards. This makes it easy to fix wiring issues (mistakes!). It also makes it easy to reuse the boards in other applications.
