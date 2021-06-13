@@ -1,5 +1,4 @@
-![pic one](https://github.com/jlmyra/PS3---JEEP/blob/main/Jeep_Landy.png)
-# DIY Radio Control System for 3D-Sets Jeep & Landy Using PS3 Contoller and ESP32
+![IMG_8973](https://user-images.githubusercontent.com/19330858/121810981-d17c1a80-cc30-11eb-9c38-12bed69e07db.jpeg)
 3DSets (https://www.3dsets.com/) offers excellent 3d printable Jeep and Landy models complete with .stl's and gcode.
 As an alternative to using traditional RC parts for the radio control system the following is an alternative DIY bluetooth radio control
 system using inexpensive off-the-shelf parts. These parts will fit within the electronics box for each vehicle. 
