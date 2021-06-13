@@ -35,17 +35,10 @@ The sketch includes many comments to follow the logic.
 ### Wiring Diagram:
 
 ### Wiring
-<img src="https://user-images.githubusercontent.com/19330858/121811796-75ff5c00-cc33-11eb-84bc-1eb0b6415312.jpeg" width="15%">
-<img src="https://user-images.githubusercontent.com/19330858/121811818-93342a80-cc33-11eb-9cec-99e0740186c7.jpeg" width="15%">
-![IMG_8973](https://user-images.githubusercontent.com/19330858/121811796-75ff5c00-cc33-11eb-84bc-1eb0b6415312.jpeg)
-![IMG_9084](https://user-images.githubusercontent.com/19330858/121811818-93342a80-cc33-11eb-9cec-99e0740186c7.jpeg)
-![IMG_8976](https://user-images.githubusercontent.com/19330858/121811833-99c2a200-cc33-11eb-93af-7913c0f6943e.jpeg)
-![IMG_8974](https://user-images.githubusercontent.com/19330858/121811838-9deebf80-cc33-11eb-9abd-c292c9b204e5.jpeg)
-![IMG_8972](https://user-images.githubusercontent.com/19330858/121811845-a810be00-cc33-11eb-854b-9439ca7537ce.jpeg)
-![IMG_9633](https://user-images.githubusercontent.com/19330858/121811852-ae9f3580-cc33-11eb-84ea-e2bdebc1cd3b.jpeg)
-![IMG_9630](https://user-images.githubusercontent.com/19330858/121811855-b232bc80-cc33-11eb-9704-96d9016bea4d.jpeg)
+<img src="https://user-images.githubusercontent.com/19330858/121811796-75ff5c00-cc33-11eb-84bc-1eb0b6415312.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811818-93342a80-cc33-11eb-9cec-99e0740186c7.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811833-99c2a200-cc33-11eb-93af-7913c0f6943e.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811838-9deebf80-cc33-11eb-9abd-c292c9b204e5.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811845-a810be00-cc33-11eb-854b-9439ca7537ce.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811852-ae9f3580-cc33-11eb-84ea-e2bdebc1cd3b.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811855-b232bc80-cc33-11eb-9704-96d9016bea4d.jpeg" width="15%">
 
-<img src="https://user-images.githubusercontent.com/19330858/101287278-4f142900-37bd-11eb-98c9-aa06b67d0906.jpeg" width="15%"></img> <img src="https://user-images.githubusercontent.com/19330858/101287284-54717380-37bd-11eb-911c-3e1199b6ab27.jpeg" width="15%"></img> <img src="https://user-images.githubusercontent.com/19330858/101287286-5a675480-37bd-11eb-9305-bae63bd2e4bf.jpeg" width="15%"></img> 
+
+
 
  - I used 2.54mm pitch screw terminal blocks for making circuit board connections instead of soldering wires directly to the circuit boards. This makes it easy to fix wiring issues (mistakes!). It also makes it easy to reuse the boards in other applications.
  - I offer suggestions for 2 different BEC's necessary to reduce the battery voltage from ~8V to 5V for the ESP32. The second one in the parts list is much smaller making it preferable over the other. Any device that will reduce the battery voltage to 5V can be used.
