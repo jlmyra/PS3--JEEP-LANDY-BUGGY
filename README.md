@@ -4,7 +4,7 @@ As an alternative to using traditional RC parts for the radio control system the
 system using inexpensive off-the-shelf parts. These parts will fit within the electronics box for each vehicle. 
 
 ### PS3 Controller Parts:
-- MH-ET ESP32 Microcontroller - https://acrobotic.com/collections/esp8266/products/acr-00024 or https://www.amazon.com/gp/product/B08ND91YB8/ref=ppx_yo_dt_b_asin_title_o01_s00?ie=UTF8&psc=1 ($6.95)
+- MH-ET ESP32 Microcontroller - https://acrobotic.com/collections/esp8266/products/acr-00024 or https://www.amazon.com/ACEIRMC-ESP-WROOM-32-Bluetooth-Development-Compatible/dp/B08PNWB81Z/ref=sr_1_4?crid=1PMHRPQV3WAJH&dchild=1&keywords=esp32+d1+mini&qid=1623596879&s=electronics&sprefix=esp32%2Celectronics%2C176&sr=1-4 ($6.95)
 - Adafruit DRV8871 Motor Controller - https://tinyurl.com/y2jta8pr ($7.50)
 - Cytron MD13S Motor Controller - https://www.cytron.io/p-13amp-6v-30v-dc-motor-driver ($9.90)
 - PS3 Controller - Amazon : https://tinyurl.com/y3ootahd ($19.90)
