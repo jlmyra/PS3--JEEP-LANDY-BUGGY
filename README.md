@@ -1,4 +1,5 @@
-![IMG_8973](https://user-images.githubusercontent.com/19330858/121810981-d17c1a80-cc30-11eb-9c38-12bed69e07db.jpeg)
+![IMG_8973](https://user-images.githubusercontent.com/19330858/121810981-d17c1a80-cc30-11eb![IMG_7249](https://user-images.githubusercontent.com/19330858/121811420-616e9400-cc32-11eb-835a-a49df8c87961.jpeg)
+-9c38-12bed69e07db.jpeg)
 3DSets (https://www.3dsets.com/) offers excellent 3d printable Jeep and Landy models complete with .stl's and gcode.
 As an alternative to using traditional RC parts for the radio control system the following is an alternative DIY bluetooth radio control
 system using inexpensive off-the-shelf parts. These parts will fit within the electronics box for each vehicle. 
