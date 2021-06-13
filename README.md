@@ -35,7 +35,7 @@ The sketch includes many comments to follow the logic.
 ### Wiring Diagram:
 
 ### Wiring
-<img src="https://user-images.githubusercontent.com/19330858/121811796-75ff5c00-cc33-11eb-84bc-1eb0b6415312.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811818-93342a80-cc33-11eb-9cec-99e0740186c7.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811833-99c2a200-cc33-11eb-93af-7913c0f6943e.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811838-9deebf80-cc33-11eb-9abd-c292c9b204e5.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811845-a810be00-cc33-11eb-854b-9439ca7537ce.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811852-ae9f3580-cc33-11eb-84ea-e2bdebc1cd3b.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811855-b232bc80-cc33-11eb-9704-96d9016bea4d.jpeg" width="15%">
+<img src="https://user-images.githubusercontent.com/19330858/121811796-75ff5c00-cc33-11eb-84bc-1eb0b6415312.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811818-93342a80-cc33-11eb-9cec-99e0740186c7.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811833-99c2a200-cc33-11eb-93af-7913c0f6943e.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811838-9deebf80-cc33-11eb-9abd-c292c9b204e5.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811852-ae9f3580-cc33-11eb-84ea-e2bdebc1cd3b.jpeg" width="15%"><img src="https://user-images.githubusercontent.com/19330858/121811855-b232bc80-cc33-11eb-9704-96d9016bea4d.jpeg" width="15%">
 
 
 
