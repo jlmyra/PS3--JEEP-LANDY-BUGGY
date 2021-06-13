@@ -33,7 +33,6 @@ The sketch includes many comments to follow the logic.
  - **Citations.ino** Recognition of others whose know-how contributed to this project
  - **EVENTS.ino** Is the routine that communicates with the PS3 controller and translates it into actions for the motor and steering servo.
 ### Wiring Diagram:
-![pic one](https://github.com/jlmyra/PS3--JEEP-LANDY/blob/main/JEEP-LANDY_Wiring_Diagram.png)
 
 ### Wiring
 <img src="https://user-images.githubusercontent.com/19330858/101287278-4f142900-37bd-11eb-98c9-aa06b67d0906.jpeg" width="15%"></img> <img src="https://user-images.githubusercontent.com/19330858/101287284-54717380-37bd-11eb-911c-3e1199b6ab27.jpeg" width="15%"></img> <img src="https://user-images.githubusercontent.com/19330858/101287286-5a675480-37bd-11eb-9305-bae63bd2e4bf.jpeg" width="15%"></img> 
