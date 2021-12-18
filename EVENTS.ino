@@ -28,178 +28,68 @@ void onEvent(){
       motorSpeedSlow = map(joystickPos, -128, 128, -256, 256);
     
 //***FORWARD***
-    if(joystickPos < -2){  
+    if(joystickPos < -2){ 
          
       motorSpeed = -motorSpeed; //change sign of motorSpeed   
       
       if(Ps3.data.button.l1){ //*****NITRO****** - from pushing L1 button
-        
-      for(int i = oldMotorSpeed; i <= motorSpeed; i = i + (motorSpeedIncrement+1)){
-        
-      oldMotorSpeed = oldMotorSpeed + motorSpeedIncrement + 1; // oldMotorSpeed is initialized as 0
+       
       digitalWrite(driveMotorDirection, LOW); //Cytron MD-13S DIR pin LOW 
-      ledcWrite(driveMotorChannel, (oldMotorSpeed * nitroSpeed)); //reduce the motor speed by 40%
+      ledcWrite(driveMotorChannel, (motorSpeed * nitroSpeed)); //increase the motor speed by nitroSpeed
        
       Serial.print("Moved the left stick FORWARD NITRO:");
       Serial.print(" x="); Serial.print(Ps3.data.analog.stick.lx, DEC);
       Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ly, DEC);
-      Serial.print("  oldMotorSpeed="); Serial.print(oldMotorSpeed); Serial.print("  motorSpeed="); Serial.print(motorSpeed);
-      Serial.print("  joystickPos="); Serial.print(joystickPos); Serial.print("  oldJoystickPos="); Serial.print(oldJoystickPos);
+      Serial.print("  motorSpeed="); Serial.print(motorSpeed);
+      Serial.print("  joystickPos="); Serial.print(joystickPos); 
       Serial.println();
-      }}      
+      }      
 
-      if(!Ps3.data.button.l1){ //*****NORMAL SPEED***** - L1 not pushed
-        
-      for(int i = oldMotorSpeed; i <= motorSpeed; i = i + motorSpeedIncrement){
-        
-      oldMotorSpeed = oldMotorSpeed + motorSpeedIncrement; // oldMotorSpeed is initialized as 0 
+      if(!Ps3.data.button.l1){ //*****NORMAL SPEED***** - L1 not pushed 
       digitalWrite(driveMotorDirection, LOW); //Cytron MD-13S DIR pin LOW
-      ledcWrite(driveMotorChannel, (oldMotorSpeed * normalSpeed)); //reduce the motor speed by 60%
+      ledcWrite(driveMotorChannel, (motorSpeed * normalSpeed)); //reduce the motor speed by normalSpeed
        
       Serial.print("Moved the left stick FORWARD NORMAL:");
       Serial.print(" x="); Serial.print(Ps3.data.analog.stick.lx, DEC);
       Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ly, DEC);
-      Serial.print("  oldMotorSpeed="); Serial.print(oldMotorSpeed); Serial.print("  motorSpeed="); Serial.print(motorSpeed);
-      Serial.print("  joystickPos="); Serial.print(joystickPos); Serial.print("  oldJoystickPos="); Serial.print(oldJoystickPos);
+      Serial.print("  motorSpeed="); Serial.print(motorSpeed);
+      Serial.print("  joystickPos="); Serial.print(joystickPos); 
       Serial.println();
-      }}}
+      }}
 
 //***REVERSE*** - motorSpeed is greater than 0
     else if(joystickPos > 2 ){ 
 
-      if(Ps3.data.button.l1){ //******NITRO********* - L1 Pushed
+      if(Ps3.data.button.l1){ //******NITRO********* - L1 Depressed
         
-      for(int i = oldMotorSpeed; i <= motorSpeed; i = i + (motorSpeedIncrement+1)){
-        
-      oldMotorSpeed = oldMotorSpeed + motorSpeedIncrement + 1;
       digitalWrite(driveMotorDirection, HIGH); //Cytron MD-13S DIR pin HIGH to reverse motor direction 
-      ledcWrite(driveMotorChannel, (oldMotorSpeed * nitroSpeed)); //reduce the motor speed by 40%
+      ledcWrite(driveMotorChannel, (motorSpeed * nitroSpeed)); //reduce the motor speed by nitroSpeed
        
       Serial.print("Moved the left stick REVERSE NITRO:");
       Serial.print(" x="); Serial.print(Ps3.data.analog.stick.lx, DEC);
       Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ly, DEC);
-      Serial.print("  oldMotorSpeed="); Serial.print(oldMotorSpeed); Serial.print("  motorSpeed="); Serial.print(motorSpeed);
-      Serial.print("  joystickPos="); Serial.print(joystickPos); Serial.print("  oldJoystickPos="); Serial.print(oldJoystickPos);
+       Serial.print("  motorSpeed="); Serial.print(motorSpeed);
+      Serial.print("  joystickPos="); Serial.print(joystickPos); 
       Serial.println();
-      }}
+      }
       
       if(!Ps3.data.button.l1){  //*******NORMAL SPEED********* - L1 not pushed
         
-      for(int i = oldMotorSpeed; i <= motorSpeed; i = i + motorSpeedIncrement){
-        
-      oldMotorSpeed = oldMotorSpeed + motorSpeedIncrement;
       digitalWrite(driveMotorDirection, HIGH); //Cytron MD-13S DIR pin HIGH to reverse motor direction
-      ledcWrite(driveMotorChannel, (oldMotorSpeed * normalSpeed)); //reduce the motor speed by 60% 
+      ledcWrite(driveMotorChannel, (motorSpeed * normalSpeed)); //reduce the motor speed by normalSpeed 
             
       Serial.print("Moved the left stick REVERSE NORMAL:");
       Serial.print(" x="); Serial.print(Ps3.data.analog.stick.lx, DEC);
       Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ly, DEC);
-      Serial.print("  oldMotorSpeed="); Serial.print(oldMotorSpeed); Serial.print("  motorSpeed="); Serial.print(motorSpeed);
-      Serial.print("  joystickPos="); Serial.print(joystickPos); Serial.print("  oldJoystickPos="); Serial.print(oldJoystickPos);
+      Serial.print("  motorSpeed="); Serial.print(motorSpeed);
+      Serial.print("  joystickPos="); Serial.print(joystickPos);
       Serial.println(); 
-      }}}
-
-//***FORWARD SLOWDOWN***     
-    else if((joystickPos > -2 || joystickPos < 2) && (oldJoystickPos < joystickPos)){
+      }}
       
-      if(Ps3.data.button.l1){ //*****NITRO***** - from pushing L1 button
-        motorSpeed = -motorSpeed; //change sign of motorSpeed
-
-      for(int i = motorSpeed; i <= oldMotorSpeed; i = i - motorSpeedIncrement){
-  
-      oldMotorSpeed = oldMotorSpeed - motorSpeedIncrement;       
-      digitalWrite(driveMotorDirection, LOW); //Cytron MD-13S DIR pin LOW
-      ledcWrite(driveMotorChannel, (oldMotorSpeed * nitroSpeed)); //reduce the motor speed by 40%
-        
-      Serial.print("Moved the left stick FORWARD SLOWDOWN NITRO:");
-      Serial.print(" x="); Serial.print(Ps3.data.analog.stick.lx, DEC);
-      Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ly, DEC);
-      Serial.print("  oldMotorSpeed="); Serial.print(oldMotorSpeed); Serial.print("  motorSpeed="); Serial.print(motorSpeed);
-      Serial.print("  joystickPos="); Serial.print(joystickPos); Serial.print("  oldJoystickPos="); Serial.print(oldJoystickPos);
-      Serial.println();
-      
-      if(motorSpeed == oldMotorSpeed){ //Turn the motor off
-      digitalWrite(driveMotorDirection, LOW); 
-      ledcWrite(driveMotorChannel, (0));
-      break;
-      }}}
-            
-     if(!Ps3.data.button.l1){ //*****NORMAL SPEED***** - L1 not pushed
-      
-      motorSpeedSlow = -motorSpeedSlow; //change sign of motorSpeed
-       
-      for(int i = motorSpeed; i <= oldMotorSpeed; i = i - motorSpeedIncrement){
-
-      oldMotorSpeedSlow = oldMotorSpeedSlow - motorSpeedIncrement;
-      digitalWrite(driveMotorDirection, LOW); //Cytron MD-13S DIR pin LOW
-      ledcWrite(driveMotorChannel, (oldMotorSpeedSlow * normalSpeed)); //reduce the motor speed by 60%
-         
-      Serial.print("Moved the left stick FORWARD SLOWDOWN NORMAL:");
-      Serial.print(" x="); Serial.print(Ps3.data.analog.stick.lx, DEC);
-      Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ly, DEC);
-      Serial.print("  oldMotorSpeedSlow="); Serial.print(oldMotorSpeedSlow); Serial.print("  motorSpeedSlow="); Serial.print(motorSpeedSlow);
-      Serial.print("  joystickPos="); Serial.print(joystickPos); Serial.print("  oldJoystickPos="); Serial.print(oldJoystickPos);
-      Serial.println();
-      
-      if(motorSpeedSlow == oldMotorSpeedSlow){  //Turn the motor off
-      digitalWrite(driveMotorDirection, LOW); 
-      ledcWrite(driveMotorChannel, (0)); 
-      break;
-      }}}}
-
-//***REVERSE SLOWDOWN***
-
-    else if((joystickPos > -2 || joystickPos < 2) && (oldJoystickPos > joystickPos)){
-          
-      if(Ps3.data.button.l1){ //*****NITRO***** - from pushing L1 button
-
-      for(int i = motorSpeed; i <= oldMotorSpeed; i = i - motorSpeedIncrement){
-
-      oldMotorSpeed = oldMotorSpeed - motorSpeedIncrement; 
-      digitalWrite(driveMotorDirection, HIGH); //Cytron MD-13S DIR pin HIGH
-      ledcWrite(driveMotorChannel, (oldMotorSpeed * nitroSpeed)); //reduce the motor speed by 40%
-       
-      Serial.print("Moved the left stick REVERSE SLOWDOWN NITRO:");
-      Serial.print(" x="); Serial.print(Ps3.data.analog.stick.lx, DEC);
-      Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ly, DEC);
-      Serial.print("  oldMotorSpeed="); Serial.print(oldMotorSpeed); Serial.print("  motorSpeed="); Serial.print(motorSpeed);
-      Serial.print("  joystickPos="); Serial.print(joystickPos); Serial.print("  oldJoystickPos="); Serial.print(oldJoystickPos);
-      Serial.println();
-       
-      if(motorSpeed == oldMotorSpeed){  //Turn the motor off
-      digitalWrite(driveMotorDirection, LOW); 
-      ledcWrite(driveMotorChannel, (0)); 
-      break;
-      }}}
-
-      if(!Ps3.data.button.l1){ //*****NORMAL SPEED***** - L1 not pushed
-
-      for(int i = motorSpeed; i <= oldMotorSpeed; i = i - motorSpeedIncrement){
-       
-      oldMotorSpeedSlow = oldMotorSpeedSlow - motorSpeedIncrement;
-      digitalWrite(driveMotorDirection, HIGH); //Cytron MD-13S DIR pin HIGH
-      ledcWrite(driveMotorChannel, (oldMotorSpeedSlow * normalSpeed)); //reduce the motor speed by 60%
-       
-      Serial.print("Moved the left stick REVERSE SLOWDOWN NORMAL:");
-      Serial.print(" x="); Serial.print(Ps3.data.analog.stick.lx, DEC);
-      Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ly, DEC);
-      Serial.print("  oldMotorSpeedSlow="); Serial.print(oldMotorSpeedSlow); Serial.print("  motorSpeedSlow="); Serial.print(motorSpeedSlow);
-      Serial.print("  joystickPos="); Serial.print(joystickPos); Serial.print("  oldJoystickPos="); Serial.print(oldJoystickPos);
-      Serial.println();
-       
-      if(motorSpeedSlow == oldMotorSpeedSlow){  //Turn the motor off
-      digitalWrite(driveMotorDirection, LOW); 
-      ledcWrite(driveMotorChannel, (0)); 
-      break;
-      }}}}     
-
 //***STOP*** 
     if(joystickPos > -2 && joystickPos < 2){
 
       motorSpeed = 0;
-      motorSpeedSlow = 0;
-      oldMotorSpeed = 0;
-      oldMotorSpeedSlow = 0;
       
       digitalWrite(driveMotorDirection, LOW);
       ledcWrite(driveMotorChannel, (motorSpeed));
@@ -207,20 +97,18 @@ void onEvent(){
       Serial.print("Moved the left stick STOP:");
       Serial.print(" x="); Serial.print(Ps3.data.analog.stick.lx, DEC);
       Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ly, DEC);
-      Serial.print("  oldMotorSpeed="); Serial.print(oldMotorSpeed); Serial.print("  motorSpeed="); Serial.print(motorSpeed);
-      Serial.print("  joystickPos="); Serial.print(joystickPos); Serial.print("  oldJoystickPos="); Serial.print(oldJoystickPos);
+      Serial.print("  motorSpeed="); Serial.print(motorSpeed);
+      Serial.print("  joystickPos="); Serial.print(joystickPos);
       Serial.println();
-      }}
+      }
+    }
 
 //***RESET VARIABLES***            
-      oldMotorSpeed = motorSpeed; //update oldMotorSpeed
-      motorSpeedSlow = motorSpeed + 100;
-      oldMotorSpeedSlow = oldMotorSpeed + 100; //Add 100 to oldMotorSpeed to allow for noticeable slowdown
-      oldJoystickPos = joystickPos; //update oldJoystick PosS
-      //Serial.print("RESET VARIABLES - oldMotorSpeed="); Serial.print(oldMotorSpeed); Serial.print(" motorSpeedSlow=");
-      //Serial.print(motorSpeedSlow); Serial.print(" oldMotorSpeedSlow="); Serial.print(oldMotorSpeedSlow); Serial.print(" oldJoystickPos=");
-      //Serial.println(oldJoystickPos); 
-
+     // oldMotorSpeed = motorSpeed; //update oldMotorSpeed
+      //motorSpeedSlow = motorSpeed + 100;
+      //oldMotorSpeedSlow = oldMotorSpeed + 100; //Add 100 to oldMotorSpeed to allow for noticeable slowdown
+      //oldJoystickPos = joystickPos; //update oldJoystickPos
+      
 //***********************************************************************************  
 //*****************END Left Joystick - Motor Speed & Direction***********************
 //***********************************************************************************

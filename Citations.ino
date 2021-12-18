@@ -20,6 +20,9 @@
  RENZO MISCHIANTI for his write-up on voltage dividers
  https://www.mischianti.org/2019/06/15/voltage-divider-calculator-and-application/
 
+ KHALED MAGDY for his outstanding write-up on the ESP32 ADC and ADC Calibration
+ https://deepbluembedded.com/esp32-adc-tutorial-read-analog-voltage-arduino/
+
 ****************************************************************************************
 *************************************** LICENSE ****************************************
 ****************************************************************************************
