@@ -33,12 +33,8 @@
   }
 
   if (analogReadCounter == 500){
-    //Serial.print("analogReadCounter= "); Serial.println(analogReadCounter);
     batteryVoltageAvg = batteryVoltageSum / 500; //Compute the Average
     batteryVoltageCorr = (batteryVoltageAvg ) * mSlope; //Correct the ADC reading to Actual Battery Voltage
-                                                     
-    Serial.print ("batteryVoltageAvg= "); Serial.print (batteryVoltageAvg); Serial.print("\t"); Serial.print("batteryVoltageCorr= "); 
-    Serial.print (batteryVoltageCorr); Serial.print("  RumbleCounter= "); Serial.println(rumbleCounter);
 
     batteryVoltageSum = 0;
     analogReadCounter = 0;
