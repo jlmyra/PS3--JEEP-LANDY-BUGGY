@@ -50,6 +50,21 @@ float nitroSpeed = 1;
 float normalSpeed = 0.6;
 int joystickPos = 0;
 
+//*********************Motor Smoothing Variables***********************/
+int currentMotorSpeed = 0;      // Current actual motor speed (smoothed)
+int targetMotorSpeed = 0;       // Target motor speed from joystick
+int targetDirection = LOW;      // Target motor direction (LOW=forward, HIGH=reverse)
+int currentDirection = LOW;     // Current motor direction
+
+// Ramping rates - adjust these values to control acceleration/deceleration speed
+// Higher values = faster acceleration/deceleration
+// Lower values = smoother but slower transitions
+int accelerationRate = 3;       // Speed increase per update cycle
+int decelerationRate = 5;       // Speed decrease per update cycle (usually faster than accel)
+
+unsigned long lastRampUpdate = 0;
+unsigned long rampUpdateInterval = 10; // Update motor speed every 10ms (100 times per second)
+
 //*********************End Motor Ramp Variables***********************/
 
 //****************Battery Voltage Alarm******************************/
@@ -140,15 +155,63 @@ int rumbleCounter = 0;
 // required different endpoints to get the wheels centered.
   
 }
- 
+
+//*******************Motor Ramping Function for Smooth Acceleration/Deceleration***********************
+void updateMotorRamping() {
+  unsigned long currentMillis = millis();
+
+  // Only update at specified interval (default 10ms)
+  if (currentMillis - lastRampUpdate < rampUpdateInterval) {
+    return;
+  }
+  lastRampUpdate = currentMillis;
+
+  // Handle direction changes - need to ramp down to zero before changing direction
+  if (targetDirection != currentDirection && currentMotorSpeed > 0) {
+    // Ramp down to zero before direction change
+    if (currentMotorSpeed > decelerationRate) {
+      currentMotorSpeed -= decelerationRate;
+    } else {
+      currentMotorSpeed = 0;
+      currentDirection = targetDirection; // Change direction when stopped
+    }
+  }
+  // Normal ramping when direction matches or motor is stopped
+  else {
+    currentDirection = targetDirection;
+
+    // Ramp speed up or down toward target
+    if (currentMotorSpeed < targetMotorSpeed) {
+      // Accelerating
+      currentMotorSpeed += accelerationRate;
+      if (currentMotorSpeed > targetMotorSpeed) {
+        currentMotorSpeed = targetMotorSpeed; // Don't overshoot
+      }
+    }
+    else if (currentMotorSpeed > targetMotorSpeed) {
+      // Decelerating
+      currentMotorSpeed -= decelerationRate;
+      if (currentMotorSpeed < targetMotorSpeed) {
+        currentMotorSpeed = targetMotorSpeed; // Don't undershoot
+      }
+    }
+  }
+
+  // Apply smoothed speed to motor
+  digitalWrite(driveMotorDirection, currentDirection);
+  ledcWrite(driveMotorChannel, currentMotorSpeed);
+}
+//*******************End Motor Ramping Function***********************
+
 void loop() {
-  
+
   if(!Ps3.isConnected()){
-  
-  return; 
+
+  return;
 
   }
-          
+
+  updateMotorRamping();     // Update motor speed smoothly
   computeBatteryVoltage();
 }
  
