@@ -19,25 +19,29 @@
 
 //****************Configuration Constants******************************/
 // Joystick deadzone threshold
-const int JOYSTICK_DEADZONE = 2;
+constexpr uint8_t JOYSTICK_DEADZONE = 2;
 
 // Winch speed multiplier (0.0 to 1.0)
-const float WINCH_SPEED_MULTIPLIER = 0.8;
+constexpr float WINCH_SPEED_MULTIPLIER = 0.8;
 
 // Battery monitoring constants
-const int ADC_SAMPLE_COUNT = 500;           // Number of ADC samples for averaging
-const int ADC_SAMPLE_INTERVAL_MS = 2;       // Milliseconds between ADC samples
-const float BATTERY_VOLTAGE_FULL = 8.4;     // Fully charged battery voltage
-const float BATTERY_VOLTAGE_MIN = 6.7;      // Minimum safe battery voltage
+constexpr uint16_t ADC_SAMPLE_COUNT = 500;           // Number of ADC samples for averaging
+constexpr uint8_t ADC_SAMPLE_INTERVAL_MS = 2;        // Milliseconds between ADC samples
+constexpr float BATTERY_VOLTAGE_FULL = 8.4;          // Fully charged battery voltage
+constexpr float BATTERY_VOLTAGE_MIN = 6.7;           // Minimum safe battery voltage
 
 // Battery voltage thresholds for LED indicators
-const float BATTERY_LEVEL_HIGH = 8.0;       // 4 LEDs
-const float BATTERY_LEVEL_MED_HIGH = 7.8;   // 3 LEDs threshold (upper)
-const float BATTERY_LEVEL_MED = 7.3;        // 2 LEDs threshold
-const float BATTERY_LEVEL_LOW = 6.7;        // 1 LED threshold (critical)
+constexpr float BATTERY_LEVEL_HIGH = 8.0;       // 4 LEDs
+constexpr float BATTERY_LEVEL_MED_HIGH = 7.8;   // 3 LEDs threshold (upper)
+constexpr float BATTERY_LEVEL_MED = 7.3;        // 2 LEDs threshold
+constexpr float BATTERY_LEVEL_LOW = 6.7;        // 1 LED threshold (critical)
 
 // Low battery rumble warning delay (in seconds)
-const int LOW_BATTERY_RUMBLE_DELAY = 14;    // Rumble after 15 seconds (14+1)
+constexpr uint8_t LOW_BATTERY_RUMBLE_DELAY = 14;    // Rumble after 15 seconds (14+1)
+
+// Connection watchdog timeout (milliseconds)
+// If no controller events received for this duration, stop motors for safety
+constexpr unsigned long CONNECTION_TIMEOUT_MS = 500;  // 0.5 seconds
 //****************END Configuration Constants******************************/
 
 //****************Motor PWM******************************/
@@ -80,35 +84,37 @@ int servoMax = MV_servoMax;// Passenger side
 //****************END Steering Servo******************************/
 
 //*********************Motor Speed Variables***********************/
-int motorSpeed = 0;
-int motorSpeedSlow = 0;
-float nitroSpeed = 1;
-float normalSpeed = 0.6;
-int joystickPos = 0;
+int motorSpeed = 0;           // Intermediate calculation variable
+float nitroSpeed = 1.0;       // Speed multiplier for nitro mode
+float normalSpeed = 0.6;      // Speed multiplier for normal mode
+int8_t joystickPos = 0;       // Joystick position (-128 to +128)
 
 //*********************Motor Smoothing Variables***********************/
-int currentMotorSpeed = 0;      // Current actual motor speed (smoothed)
-int targetMotorSpeed = 0;       // Target motor speed from joystick
-int targetDirection = LOW;      // Target motor direction (LOW=forward, HIGH=reverse)
-int currentDirection = LOW;     // Current motor direction
+uint8_t currentMotorSpeed = 0;      // Current actual motor speed (smoothed) 0-255
+uint8_t targetMotorSpeed = 0;       // Target motor speed from joystick 0-255
+uint8_t targetDirection = LOW;      // Target motor direction (LOW=forward, HIGH=reverse)
+uint8_t currentDirection = LOW;     // Current motor direction
 
 // Ramping rates - adjust these values to control acceleration/deceleration speed
 // Higher values = faster acceleration/deceleration
 // Lower values = smoother but slower transitions
-int accelerationRate = 3;       // Speed increase per update cycle
-int decelerationRate = 5;       // Speed decrease per update cycle (usually faster than accel)
+uint8_t accelerationRate = 3;       // Speed increase per update cycle
+uint8_t decelerationRate = 5;       // Speed decrease per update cycle (usually faster than accel)
 
 unsigned long lastRampUpdate = 0;
 unsigned long rampUpdateInterval = 10; // Update motor speed every 10ms (100 times per second)
 
+// Connection watchdog - tracks last controller activity for safety
+unsigned long lastEventTime = 0;
+
 //*********************End Motor Ramp Variables***********************/
 
 //****************Battery Voltage Alarm******************************/
-int batStatusLED = 0; //Variable to hold rover battery status on controller
+uint8_t batStatusLED = 0; //Variable to hold rover battery status on controller (LED pattern)
 
 // Battery Voltage Corrections
-int R1 = MV_R1;
-int R2 = MV_R2;
+uint32_t R1 = MV_R1;
+uint32_t R2 = MV_R2;
 
 float vOutMax = BATTERY_VOLTAGE_FULL * R2 / (R1 + R2); // Calculate output of voltage divider with fully charged batteries
 float mSlope = 1 / (vOutMax / BATTERY_VOLTAGE_FULL); //Calculate slope of voltage correction curve
@@ -120,13 +126,13 @@ float batteryVoltageAvg = 0;
 float batteryVoltageCorr = 0;
 float batCorrFactor = MV_batCorrFactor;
 
-unsigned long analogReadCounter = 0;
+uint16_t analogReadCounter = 0;
 
-const int batPin =  32; //GPIO32 - ADC1_CH4 Variable that holds the GPIO Address
+constexpr uint8_t batPin = 32; //GPIO32 - ADC1_CH4 Variable that holds the GPIO Address
 unsigned long previousMillis = 0; //for timer reading A0
 unsigned long interval = ADC_SAMPLE_INTERVAL_MS; // millis between read A0
 
-int rumbleCounter = 0;
+uint8_t rumbleCounter = 0;
 
 // ADC Calibration - initialized once in setup() for efficiency
 esp_adc_cal_characteristics_t adc_chars;
@@ -247,9 +253,19 @@ void updateMotorRamping() {
 void loop() {
 
   if(!Ps3.isConnected()){
-
+    // If disconnected, ensure motors are stopped for safety
+    targetMotorSpeed = 0;
+    currentMotorSpeed = 0;
+    ledcWrite(driveMotorChannel, 0);
   return;
 
+  }
+
+  // Connection watchdog - if no events received recently, stop motors for safety
+  unsigned long currentMillis = millis();
+  if (lastEventTime > 0 && (currentMillis - lastEventTime) > CONNECTION_TIMEOUT_MS) {
+    targetMotorSpeed = 0;  // Will smoothly decelerate via updateMotorRamping()
+    DEBUG_PRINTLN("*** WATCHDOG: No controller events - stopping motors ***");
   }
 
   updateMotorRamping();     // Update motor speed smoothly

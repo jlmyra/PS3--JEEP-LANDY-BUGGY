@@ -1,6 +1,9 @@
 
 void onEvent(){
- 
+
+  // Update watchdog timer - we received a controller event
+  lastEventTime = millis();
+
 //*****************Left Joystick - Motor Speed & Direction***********************
 //Pushing the joystick forward creates negative values from 0 to -128
 //Those values get mapped to 2^8 bits or 0 to -256.
@@ -25,62 +28,42 @@ void onEvent(){
     if((abs(Ps3.event.analog_changed.stick.ly) > JOYSTICK_DEADZONE)){
       joystickPos = (Ps3.data.analog.stick.ly);
       motorSpeed = map(joystickPos, -128, 128, -256, 256);
-      motorSpeedSlow = map(joystickPos, -128, 128, -256, 256);
 
 //***FORWARD***
     if(joystickPos < -JOYSTICK_DEADZONE){
 
       motorSpeed = -motorSpeed; //change sign of motorSpeed
 
-      if(Ps3.data.button.l1){ //*****NITRO****** - from pushing L1 button
+      // Determine speed multiplier based on L1 button (nitro vs normal)
+      float speedMultiplier = Ps3.data.button.l1 ? nitroSpeed : normalSpeed;
 
       targetDirection = LOW; //Cytron MD-13S DIR pin LOW for forward
-      targetMotorSpeed = (motorSpeed * nitroSpeed); //increase the motor speed by nitroSpeed
+      targetMotorSpeed = constrain(motorSpeed * speedMultiplier, 0, 255); //Apply speed and bounds check
 
-      DEBUG_PRINT("Moved the left stick FORWARD NITRO:");
+      DEBUG_PRINT("Moved the left stick FORWARD ");
+      DEBUG_PRINT(Ps3.data.button.l1 ? "NITRO:" : "NORMAL:");
       DEBUG_PRINT(" x="); DEBUG_PRINT(Ps3.data.analog.stick.lx);
       DEBUG_PRINT(" y="); DEBUG_PRINT(Ps3.data.analog.stick.ly);
       DEBUG_PRINT("  targetSpeed="); DEBUG_PRINT(targetMotorSpeed);
       DEBUG_PRINT("  joystickPos="); DEBUG_PRINTLN(joystickPos);
       }
-
-      if(!Ps3.data.button.l1){ //*****NORMAL SPEED***** - L1 not pushed
-      targetDirection = LOW; //Cytron MD-13S DIR pin LOW for forward
-      targetMotorSpeed = (motorSpeed * normalSpeed); //reduce the motor speed by normalSpeed
-
-      DEBUG_PRINT("Moved the left stick FORWARD NORMAL:");
-      DEBUG_PRINT(" x="); DEBUG_PRINT(Ps3.data.analog.stick.lx);
-      DEBUG_PRINT(" y="); DEBUG_PRINT(Ps3.data.analog.stick.ly);
-      DEBUG_PRINT("  targetSpeed="); DEBUG_PRINT(targetMotorSpeed);
-      DEBUG_PRINT("  joystickPos="); DEBUG_PRINTLN(joystickPos);
-      }}
 
 //***REVERSE*** - motorSpeed is greater than 0
     else if(joystickPos > JOYSTICK_DEADZONE ){
 
-      if(Ps3.data.button.l1){ //******NITRO********* - L1 Depressed
+      // Determine speed multiplier based on L1 button (nitro vs normal)
+      float speedMultiplier = Ps3.data.button.l1 ? nitroSpeed : normalSpeed;
 
       targetDirection = HIGH; //Cytron MD-13S DIR pin HIGH to reverse motor direction
-      targetMotorSpeed = (motorSpeed * nitroSpeed); //increase the motor speed by nitroSpeed
+      targetMotorSpeed = constrain(motorSpeed * speedMultiplier, 0, 255); //Apply speed and bounds check
 
-      DEBUG_PRINT("Moved the left stick REVERSE NITRO:");
+      DEBUG_PRINT("Moved the left stick REVERSE ");
+      DEBUG_PRINT(Ps3.data.button.l1 ? "NITRO:" : "NORMAL:");
       DEBUG_PRINT(" x="); DEBUG_PRINT(Ps3.data.analog.stick.lx);
       DEBUG_PRINT(" y="); DEBUG_PRINT(Ps3.data.analog.stick.ly);
       DEBUG_PRINT("  targetSpeed="); DEBUG_PRINT(targetMotorSpeed);
       DEBUG_PRINT("  joystickPos="); DEBUG_PRINTLN(joystickPos);
       }
-
-      if(!Ps3.data.button.l1){  //*******NORMAL SPEED********* - L1 not pushed
-
-      targetDirection = HIGH; //Cytron MD-13S DIR pin HIGH to reverse motor direction
-      targetMotorSpeed = (motorSpeed * normalSpeed); //reduce the motor speed by normalSpeed
-
-      DEBUG_PRINT("Moved the left stick REVERSE NORMAL:");
-      DEBUG_PRINT(" x="); DEBUG_PRINT(Ps3.data.analog.stick.lx);
-      DEBUG_PRINT(" y="); DEBUG_PRINT(Ps3.data.analog.stick.ly);
-      DEBUG_PRINT("  targetSpeed="); DEBUG_PRINT(targetMotorSpeed);
-      DEBUG_PRINT("  joystickPos="); DEBUG_PRINTLN(joystickPos);
-      }}
       
 //***STOP***
     if(joystickPos > -JOYSTICK_DEADZONE && joystickPos < JOYSTICK_DEADZONE){
@@ -96,13 +79,7 @@ void onEvent(){
       }
     }
 
-//***RESET VARIABLES***            
-     // oldMotorSpeed = motorSpeed; //update oldMotorSpeed
-      //motorSpeedSlow = motorSpeed + 100;
-      //oldMotorSpeedSlow = oldMotorSpeed + 100; //Add 100 to oldMotorSpeed to allow for noticeable slowdown
-      //oldJoystickPos = joystickPos; //update oldJoystickPos
-      
-//***********************************************************************************  
+//***********************************************************************************
 //*****************END Left Joystick - Motor Speed & Direction***********************
 //***********************************************************************************
 
