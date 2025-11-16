@@ -22,13 +22,13 @@ void onEvent(){
   //    =============================================================
 
 //***Read the left joystick***
-    if((abs(Ps3.event.analog_changed.stick.ly) > 2)){      
+    if((abs(Ps3.event.analog_changed.stick.ly) > JOYSTICK_DEADZONE)){
       joystickPos = (Ps3.data.analog.stick.ly);
-      motorSpeed = map(joystickPos, -128, 128, -256, 256); 
+      motorSpeed = map(joystickPos, -128, 128, -256, 256);
       motorSpeedSlow = map(joystickPos, -128, 128, -256, 256);
-    
+
 //***FORWARD***
-    if(joystickPos < -2){
+    if(joystickPos < -JOYSTICK_DEADZONE){
 
       motorSpeed = -motorSpeed; //change sign of motorSpeed
 
@@ -37,40 +37,37 @@ void onEvent(){
       targetDirection = LOW; //Cytron MD-13S DIR pin LOW for forward
       targetMotorSpeed = (motorSpeed * nitroSpeed); //increase the motor speed by nitroSpeed
 
-      Serial.print("Moved the left stick FORWARD NITRO:");
-      Serial.print(" x="); Serial.print(Ps3.data.analog.stick.lx, DEC);
-      Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ly, DEC);
-      Serial.print("  targetSpeed="); Serial.print(targetMotorSpeed);
-      Serial.print("  joystickPos="); Serial.print(joystickPos);
-      Serial.println();
+      DEBUG_PRINT("Moved the left stick FORWARD NITRO:");
+      DEBUG_PRINT(" x="); DEBUG_PRINT(Ps3.data.analog.stick.lx);
+      DEBUG_PRINT(" y="); DEBUG_PRINT(Ps3.data.analog.stick.ly);
+      DEBUG_PRINT("  targetSpeed="); DEBUG_PRINT(targetMotorSpeed);
+      DEBUG_PRINT("  joystickPos="); DEBUG_PRINTLN(joystickPos);
       }
 
       if(!Ps3.data.button.l1){ //*****NORMAL SPEED***** - L1 not pushed
       targetDirection = LOW; //Cytron MD-13S DIR pin LOW for forward
       targetMotorSpeed = (motorSpeed * normalSpeed); //reduce the motor speed by normalSpeed
 
-      Serial.print("Moved the left stick FORWARD NORMAL:");
-      Serial.print(" x="); Serial.print(Ps3.data.analog.stick.lx, DEC);
-      Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ly, DEC);
-      Serial.print("  targetSpeed="); Serial.print(targetMotorSpeed);
-      Serial.print("  joystickPos="); Serial.print(joystickPos);
-      Serial.println();
+      DEBUG_PRINT("Moved the left stick FORWARD NORMAL:");
+      DEBUG_PRINT(" x="); DEBUG_PRINT(Ps3.data.analog.stick.lx);
+      DEBUG_PRINT(" y="); DEBUG_PRINT(Ps3.data.analog.stick.ly);
+      DEBUG_PRINT("  targetSpeed="); DEBUG_PRINT(targetMotorSpeed);
+      DEBUG_PRINT("  joystickPos="); DEBUG_PRINTLN(joystickPos);
       }}
 
 //***REVERSE*** - motorSpeed is greater than 0
-    else if(joystickPos > 2 ){
+    else if(joystickPos > JOYSTICK_DEADZONE ){
 
       if(Ps3.data.button.l1){ //******NITRO********* - L1 Depressed
 
       targetDirection = HIGH; //Cytron MD-13S DIR pin HIGH to reverse motor direction
       targetMotorSpeed = (motorSpeed * nitroSpeed); //increase the motor speed by nitroSpeed
 
-      Serial.print("Moved the left stick REVERSE NITRO:");
-      Serial.print(" x="); Serial.print(Ps3.data.analog.stick.lx, DEC);
-      Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ly, DEC);
-      Serial.print("  targetSpeed="); Serial.print(targetMotorSpeed);
-      Serial.print("  joystickPos="); Serial.print(joystickPos);
-      Serial.println();
+      DEBUG_PRINT("Moved the left stick REVERSE NITRO:");
+      DEBUG_PRINT(" x="); DEBUG_PRINT(Ps3.data.analog.stick.lx);
+      DEBUG_PRINT(" y="); DEBUG_PRINT(Ps3.data.analog.stick.ly);
+      DEBUG_PRINT("  targetSpeed="); DEBUG_PRINT(targetMotorSpeed);
+      DEBUG_PRINT("  joystickPos="); DEBUG_PRINTLN(joystickPos);
       }
 
       if(!Ps3.data.button.l1){  //*******NORMAL SPEED********* - L1 not pushed
@@ -78,26 +75,24 @@ void onEvent(){
       targetDirection = HIGH; //Cytron MD-13S DIR pin HIGH to reverse motor direction
       targetMotorSpeed = (motorSpeed * normalSpeed); //reduce the motor speed by normalSpeed
 
-      Serial.print("Moved the left stick REVERSE NORMAL:");
-      Serial.print(" x="); Serial.print(Ps3.data.analog.stick.lx, DEC);
-      Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ly, DEC);
-      Serial.print("  targetSpeed="); Serial.print(targetMotorSpeed);
-      Serial.print("  joystickPos="); Serial.print(joystickPos);
-      Serial.println();
+      DEBUG_PRINT("Moved the left stick REVERSE NORMAL:");
+      DEBUG_PRINT(" x="); DEBUG_PRINT(Ps3.data.analog.stick.lx);
+      DEBUG_PRINT(" y="); DEBUG_PRINT(Ps3.data.analog.stick.ly);
+      DEBUG_PRINT("  targetSpeed="); DEBUG_PRINT(targetMotorSpeed);
+      DEBUG_PRINT("  joystickPos="); DEBUG_PRINTLN(joystickPos);
       }}
       
 //***STOP***
-    if(joystickPos > -2 && joystickPos < 2){
+    if(joystickPos > -JOYSTICK_DEADZONE && joystickPos < JOYSTICK_DEADZONE){
 
       motorSpeed = 0;
       targetMotorSpeed = 0; // Smoothly decelerate to zero
 
-      Serial.print("Moved the left stick STOP:");
-      Serial.print(" x="); Serial.print(Ps3.data.analog.stick.lx, DEC);
-      Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ly, DEC);
-      Serial.print("  targetSpeed="); Serial.print(targetMotorSpeed);
-      Serial.print("  joystickPos="); Serial.print(joystickPos);
-      Serial.println();
+      DEBUG_PRINT("Moved the left stick STOP:");
+      DEBUG_PRINT(" x="); DEBUG_PRINT(Ps3.data.analog.stick.lx);
+      DEBUG_PRINT(" y="); DEBUG_PRINT(Ps3.data.analog.stick.ly);
+      DEBUG_PRINT("  targetSpeed="); DEBUG_PRINT(targetMotorSpeed);
+      DEBUG_PRINT("  joystickPos="); DEBUG_PRINTLN(joystickPos);
       }
     }
 
@@ -116,34 +111,21 @@ void onEvent(){
 
 
 //**********************************************************************************
-//*******************Right Joystick - Steering Servo Control************************ 
+//*******************Right Joystick - Steering Servo Control************************
 //**********************************************************************************
 
-    if((Ps3.event.analog_changed.stick.rx) > 2 ){
+    // Consolidated steering control - handles both left and right movement
+    if(abs(Ps3.event.analog_changed.stick.rx) > JOYSTICK_DEADZONE ){
         int joystick_Pos;
         int x_position = Ps3.data.analog.stick.rx;   //uses joystick x position for steering left/right
-        joystick_Pos = map(x_position, -128, 128, servoMin, servoMax); //map joystick Blynk values to servo values
+        joystick_Pos = map(x_position, -128, 128, servoMin, servoMax); //map joystick values to servo values
         steerServo.write(joystick_Pos);
-        Serial.print("Moved the right stick:");
-        Serial.print(" x="); Serial.print(Ps3.data.analog.stick.rx, DEC);
-        Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ry, DEC);
-        Serial.println();
-        Serial.print("x_Position=  "); Serial.print(x_position); Serial.print("  joystick_Pos= "); 
-        Serial.println(joystick_Pos);        
-      }   
-
-    if((Ps3.event.analog_changed.stick.rx) < -2 ){
-        int joystick_Pos;
-        int x_position = Ps3.data.analog.stick.rx;   //uses joystick x position for steering left/right
-        joystick_Pos = map(x_position, -128, 128, servoMin, servoMax); //map joystick Blynk values to servo values
-        steerServo.write(joystick_Pos);  
-        Serial.print("Moved the right stick:");
-        Serial.print(" x="); Serial.print(Ps3.data.analog.stick.rx, DEC);//serial.print DECimal
-        Serial.print(" y="); Serial.print(Ps3.data.analog.stick.ry, DEC);
-        Serial.println();
-        Serial.print("x_Position=  "); Serial.print(x_position); Serial.print("  joystick_Pos= "); 
-        Serial.println(joystick_Pos); 
-    }
+        DEBUG_PRINT("Moved the right stick:");
+        DEBUG_PRINT(" x="); DEBUG_PRINT(Ps3.data.analog.stick.rx);
+        DEBUG_PRINT(" y="); DEBUG_PRINTLN(Ps3.data.analog.stick.ry);
+        DEBUG_PRINT("x_Position=  "); DEBUG_PRINT(x_position); DEBUG_PRINT("  joystick_Pos= ");
+        DEBUG_PRINTLN(joystick_Pos);
+      }
 
 //**************************************************************************************
 //*******************END Right Joystick - Steering Servo Control************************
@@ -153,28 +135,29 @@ void onEvent(){
 //**************************************************************************************
 //*************************Winch Motor - UNWIND - REWIND Winch**************************
 //**************************************************************************************
-   
-    if((Ps3.event.analog_changed.button.up )) {
-       Serial.print("Pressing the up button: ");
-       digitalWrite(winchPWMChannel_1, LOW);
-       ledcWrite(winchPWMChannel_2, Ps3.data.analog.button.up * .8);
-       Serial.println(Ps3.data.analog.button.up, DEC);
 
-    if (Ps3.data.analog.button.up < 1) 
+    if((Ps3.event.analog_changed.button.up )) {
+       DEBUG_PRINT("Pressing the up button: ");
        digitalWrite(winchPWMChannel_1, LOW);
-       digitalWrite(winchPWMChannel_2, LOW);     
-      }
-    
+       ledcWrite(winchPWMChannel_2, Ps3.data.analog.button.up * WINCH_SPEED_MULTIPLIER);
+       DEBUG_PRINTLN(Ps3.data.analog.button.up);
+
+       if (Ps3.data.analog.button.up < 1) {
+          digitalWrite(winchPWMChannel_1, LOW);
+          digitalWrite(winchPWMChannel_2, LOW);
+       }
+    }
+
     if((Ps3.event.analog_changed.button.down )) {
-       Serial.print("Pressing the down button: ");
+       DEBUG_PRINT("Pressing the down button: ");
        digitalWrite(winchPWMChannel_2, LOW);
-       ledcWrite(winchPWMChannel_1, Ps3.data.analog.button.down * .8);
-       Serial.println(Ps3.data.analog.button.down, DEC);
-   
-    if (Ps3.data.analog.button.down < 1) 
-       digitalWrite(winchPWMChannel_1, LOW);
-       digitalWrite(winchPWMChannel_2, LOW);
-      }
+       ledcWrite(winchPWMChannel_1, Ps3.data.analog.button.down * WINCH_SPEED_MULTIPLIER);
+       DEBUG_PRINTLN(Ps3.data.analog.button.down);
+
+       if (Ps3.data.analog.button.down < 1) {
+          digitalWrite(winchPWMChannel_1, LOW);
+          digitalWrite(winchPWMChannel_2, LOW);
+       }
     }
     
 //***************************************************************************************

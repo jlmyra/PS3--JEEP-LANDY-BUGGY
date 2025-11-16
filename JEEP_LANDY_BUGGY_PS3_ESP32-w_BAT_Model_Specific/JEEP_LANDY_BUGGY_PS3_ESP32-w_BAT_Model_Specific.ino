@@ -4,6 +4,42 @@
 #include "esp_adc_cal.h"
 #include "Model_Variables.h"
 
+//****************Debug Configuration******************************/
+// Set to 1 to enable debug Serial output, 0 to disable for better performance
+#define DEBUG_MODE 1
+
+#if DEBUG_MODE
+  #define DEBUG_PRINT(x) Serial.print(x)
+  #define DEBUG_PRINTLN(x) Serial.println(x)
+#else
+  #define DEBUG_PRINT(x)
+  #define DEBUG_PRINTLN(x)
+#endif
+//****************END Debug Configuration******************************/
+
+//****************Configuration Constants******************************/
+// Joystick deadzone threshold
+const int JOYSTICK_DEADZONE = 2;
+
+// Winch speed multiplier (0.0 to 1.0)
+const float WINCH_SPEED_MULTIPLIER = 0.8;
+
+// Battery monitoring constants
+const int ADC_SAMPLE_COUNT = 500;           // Number of ADC samples for averaging
+const int ADC_SAMPLE_INTERVAL_MS = 2;       // Milliseconds between ADC samples
+const float BATTERY_VOLTAGE_FULL = 8.4;     // Fully charged battery voltage
+const float BATTERY_VOLTAGE_MIN = 6.7;      // Minimum safe battery voltage
+
+// Battery voltage thresholds for LED indicators
+const float BATTERY_LEVEL_HIGH = 8.0;       // 4 LEDs
+const float BATTERY_LEVEL_MED_HIGH = 7.8;   // 3 LEDs threshold (upper)
+const float BATTERY_LEVEL_MED = 7.3;        // 2 LEDs threshold
+const float BATTERY_LEVEL_LOW = 6.7;        // 1 LED threshold (critical)
+
+// Low battery rumble warning delay (in seconds)
+const int LOW_BATTERY_RUMBLE_DELAY = 14;    // Rumble after 15 seconds (14+1)
+//****************END Configuration Constants******************************/
+
 //****************Motor PWM******************************/
 
 uint32_t freq = 30000;  //PWM Frequency
@@ -74,8 +110,8 @@ int batStatusLED = 0; //Variable to hold rover battery status on controller
 int R1 = MV_R1;
 int R2 = MV_R2;
 
-float vOutMax = 8.4 * R2 / (R1 + R2); // Calculate output of voltage divider with fully charged batteries
-float mSlope = 1 / (vOutMax / 8.4); //Calculate slope of voltage correction curve
+float vOutMax = BATTERY_VOLTAGE_FULL * R2 / (R1 + R2); // Calculate output of voltage divider with fully charged batteries
+float mSlope = 1 / (vOutMax / BATTERY_VOLTAGE_FULL); //Calculate slope of voltage correction curve
 
 float adcRead = 0;
 float batteryVoltage = 0; //computed battery voltage
@@ -86,11 +122,14 @@ float batCorrFactor = MV_batCorrFactor;
 
 unsigned long analogReadCounter = 0;
 
-const int batPin =  32; //GPIO32 - ADC1_CH4 Variable that holds the GPIO Address 
+const int batPin =  32; //GPIO32 - ADC1_CH4 Variable that holds the GPIO Address
 unsigned long previousMillis = 0; //for timer reading A0
-unsigned long interval = 2; // millis between read A0
+unsigned long interval = ADC_SAMPLE_INTERVAL_MS; // millis between read A0
 
 int rumbleCounter = 0;
+
+// ADC Calibration - initialized once in setup() for efficiency
+esp_adc_cal_characteristics_t adc_chars;
 
 //****************END Battery Voltage Alarm******************************/
 
@@ -121,6 +160,8 @@ int rumbleCounter = 0;
 // Battery Meter Setup
   pinMode(batPin, INPUT);
   analogSetPinAttenuation(batPin, ADC_0db);
+  // Calibrate ADC once at startup for efficiency (instead of every read)
+  esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_DB_11, ADC_WIDTH_BIT_12, 1100, &adc_chars);
 
 // Allow allocation of all timers
   ESP32PWM::allocateTimer(0);
